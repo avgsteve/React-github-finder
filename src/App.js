@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './components/layout/Navbar';
 // import UserItem from './components/users/UserItem';
 import Users from './components/users/Users'; // "User" component uses UserItem and passes in the Props data as users Array
+import Search from './components/users/Search';
 
 import axios from 'axios';
 
@@ -65,9 +66,10 @@ class App extends Component {
         <Navbar />
 
         <div className="container">
-
           {/* Render "Users" component inside a div.
-          And Users component uses UserItems to render users' data */}`
+          And Users component uses UserItems to render users' data */}
+
+          <Search />
 
           <Users loadingApi={this.state.loadingApi} users={this.state.users} />
 

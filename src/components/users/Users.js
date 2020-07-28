@@ -2,12 +2,13 @@ import React from 'react';
 import UserItem from './UserItem';
 // 1) Use and send data to "UserItem" component to render data
 
-import Spinner from '../layout/Spinner'; // for showing spinner before loading
+import Spinner from '../layout/Spinner';
 
-// 2) Being used by App.js, get "state" from App.js (props) first
-const Users = ({ users, loadingApi }) => {
+const Users = ({ users, loadingApi }) => { // 2) Being used by App.js, get "state" from App.js (props) first
 
-  // 3) (No need for render() ) when using Arrow function as exported component ) 
+
+  // 3) === (NO NEED for render() ) when using Arrow function as exported component ) ===
+
   // In render(), use Component "UserItem" and pass in Props "key" and "user"
   // Props is the data from this.state
 

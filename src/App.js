@@ -22,18 +22,34 @@ class App extends Component {
       { loadingApi: true }
     );
 
-    const fetchedData = await axios.get('https://api.github.com/users');
-    // .then(responseFromAPI => console.log(responseFromAPI.data));
+    setTimeout( //use setTimeout for testing purpose
 
-    console.log('\n=== The data fetched from response of Github API: === \n');
-    console.log(fetchedData);
+      async () => {
 
-    this.setState( // changes the properties in the "state" object
-      {
-        users: fetchedData.data,
-        loadingApi: false
-      }
-    );
+        // const res = await axios.get('https://api.github.com/users'); //still async/await
+
+        const res = await axios.get('https://api.github.com/users', {
+          headers: {
+            Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+          }
+        })
+
+        this.setState({ users: res.data, loadingApi: false });
+
+        console.log('fetched!');
+
+      }, 600);
+
+    // const fetchedData = await axios.get('https://api.github.com/users');
+    // // .then(responseFromAPI => console.log(responseFromAPI.data));
+    // console.log('\n=== The data fetched from response of Github API: === \n');
+    // console.log(fetchedData);
+
+    // this.setState(
+    //   {
+    //     users: fetchedData.data,
+    //     loadingApi: false
+    //   });
 
     //ref:  https://reactjs.org/docs/react-component.html#componentdidmount
 
@@ -53,7 +69,9 @@ class App extends Component {
           {/* Render "Users" component inside a div.
           And Users component uses UserItems to render users' data */}`
 
-          <Users loading={this.state.loadingApi} users={this.state.users} />
+          <Users loadingApi={this.state.loadingApi} users={this.state.users} />
+
+          {/* The attribute names in <Users />  must match the function parameter names */}`
 
         </div>
 

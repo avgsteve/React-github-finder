@@ -1,30 +1,62 @@
-import React, { useContext } from 'react';
+import React, { Component } from 'react';
 import UserItem from './UserItem';
-import Spinner from '../layout/Spinner';
-import GithubContext from '../../context/github/githubContext';
 
-const Users = () => {
-  const githubContext = useContext(GithubContext);
+// 1) This component "Users" uses UserItem moudle to send data to it.
+// 2) Then use UserItem to display results in App.js
 
-  const { loading, users } = githubContext;
+export class Users extends Component {
 
-  if (loading) {
-    return <Spinner />;
-  } else {
+  state = {
+    //Array:   users: [ {...} , {...} , {...}]
+    users: [
+      {
+        id: '1',
+        login: 'mojombo',
+        avatar_url: 'https://avatars0.githubusercontent.com/u/1?v=4',
+        html_url: 'https://github.com/mojombo'
+      }
+      , {
+        id: '2',
+        login: 'defunkt',
+        avatar_url: 'https://avatars0.githubusercontent.com/u/2?v=4',
+        html_url: 'https://github.com/defunkt'
+      },
+      {
+        id: '3',
+        login: 'pjhyett',
+        avatar_url: 'https://avatars0.githubusercontent.com/u/3?v=4',
+        html_url: 'https://github.com/pjhyett'
+      }
+    ]
+  };
+
+
+  // 3) In render(), use Component "UserItem" and pass in Props "key" and "user"
+  // Props is the data from this.state
+
+  render() {
+
+    // 4) create CSS style for the <div style={userStyle}> to wrap UserItem
+    const userStyle = {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gridGap: '1rem'
+    }
+
+    // 5) Wrap the function and component UserItem inside the div
     return (
       <div style={userStyle}>
-        {users.map(user => (
-          <UserItem key={user.id} user={user} />
-        ))}
+        {
+          this.state.users.map(user => (
+            <UserItem key={user.id} user={user} />
+          )
+          )
+        }
       </div>
-    );
+    )
   }
-};
+}
 
-const userStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gridGap: '1rem'
-};
 
 export default Users;
+

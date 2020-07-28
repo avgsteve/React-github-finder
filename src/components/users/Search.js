@@ -19,7 +19,11 @@ export class Search extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.text);
+    console.log("\nThe text value from Form's onSubmit function in Seach.js:\n", this.state.text);
+
+    // onSubmit() also triggers the method "this.props.searchUsers" with the element (The <Search /> ) at one level up (in app.js)
+    this.props.searchUsers(this.state.text);
+
   };
 
 

@@ -37,15 +37,16 @@ export class Users extends Component {
   render() {
 
     // 4) create CSS style for the <div style={userStyle}> to wrap UserItem
-    const userStyle = {
+    const divStyle = {
       display: 'grid',
       gridTemplateColumns: 'repeat(3, 1fr)',
       gridGap: '1rem'
     }
 
     // 5) Wrap the function and component UserItem inside the div
+    // user={user} is the "Props" data for UserItem component
     return (
-      <div style={userStyle}>
+      <div style={divStyle}>
         {
           this.state.users.map(user => (
             <UserItem key={user.id} user={user} />

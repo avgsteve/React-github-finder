@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class UserItem extends Component {
 
-  // The state (Props) will now be passed in from the Users component
+const UserItem = ({ user: { login, avatar_url, html_url } }) => {
 
-  render() {
-    // get avatar_url, login(name), html_url from the data passed in from "this.props" via "Users" component in other file 
-    // instead of from this.state via the state obj in this file
+  // Removed code: const {  } = props.user;  and use { user: { login, avatar_url, html_url } } as parameters instead.
 
-    const { login, avatar_url, html_url } = this.props.user;
+  // As now UserItem is an arrow function getting data by using destructuring arguments. Also no need to use render() in Arrow function
 
-    return (
-      <div className='card text-center'>
-        <img src={avatar_url} alt=''
-          className='round-img' style={{ width: '60px' }} />
-        <h3>{login}</h3>
-        <a href={html_url} className='btn btn-dark btn-sm my-1'>
-          More
+  return (
+    <div className='card text-center'>
+      <img src={avatar_url} alt=''
+        className='round-img' style={{ width: '60px' }} />
+      <h3>{login}</h3>
+      <a href={html_url} className='btn btn-dark btn-sm my-1'>
+        More
         </a>
-      </div>
-    );
-
-  }
+    </div>
+  );
 
 };
+
+UserItem.propTypes = {
+  user: PropTypes.object.isRequired,  //To define the type of argument passed into arrow function has to be obj and required to make this function work
+
+}
+
+
 
 export default UserItem;

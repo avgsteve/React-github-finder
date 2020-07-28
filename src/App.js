@@ -63,12 +63,12 @@ class App extends Component {
   } // end of 2) componentDidMount()
 
 
+  // ======= Prop methods =======
 
-  // App'js static method used to send GET req to API to find user
+  // send GET req to API to find user
   searchGithubUsers = async text => {
 
     this.setState({ loadingApi: true });
-
 
     // for testing
     console.log('==> Text input received in method "searchUsers":\n', text);
@@ -90,6 +90,13 @@ class App extends Component {
 
   }
 
+  clearUsersData_andInputField = () => {
+    // for testing
+    console.log(`\nUsers' data and search field have been cleared!\n`);
+
+    this.setState({ users: [], loading: false })
+  };
+
 
   // ==== 3)  
   render() { // pass data to components and display them
@@ -103,11 +110,20 @@ class App extends Component {
           {/* Render "Users" component inside a div.
           And Users component uses UserItems to render users' data */}
 
-          <Search searchUsers={this.searchGithubUsers} />
+          <Search searchUsers={this.searchGithubUsers} clearUsers={this.clearUsersData_andInputField} />
+          {/* 
+          #1) The attribute "searchUsers" is triggered by Search.js and attribute's value "this.searchGithubUsers" is the "Prop methods" in this file
+          #2) 
+          */}
 
           <Users loadingApi={this.state.loadingApi} users={this.state.users} />
+          {/* 
+          #1) The attributes' value in <Users />  must match the function parameter names in Users component
 
-          {/* The attribute names in <Users />  must match the function parameter names */}
+          #2) The attributes' value is linked to the objects in "state"
+            and the attributes&value (ex: loadingApi={this.state.loadingApi} )
+            will be passed into Users component as arguments
+          */}
 
         </div>
 

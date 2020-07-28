@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
+
 
 // Emmet: rce
 export class Search extends Component {
 
   state = {
     text: '',
+  }
+
+  static propType = {
+    searchUsers: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
   }
 
   onChange = (event) => {
@@ -37,9 +44,15 @@ export class Search extends Component {
           {/* when typing in this text field, the onChange was triggered to call this.onChange method which calls this.setState() to change the property in state  */}
 
           <input type="submit" value="Submit the search" className="btn btn-dark btn-block" />
-
+          {/* Clicking submiting button triggers event listener then it calls this.onSubmit method which sends this.state.text to App.js's Props method:   this.searchGithubUsers
+          */}
 
         </form>
+
+        <button className="btn btn-light btn-block" onClick={this.props.clearUsers} >Clear</button>
+        {/* Clicking submiting button triggers event listener then it calls the App.js's Props method:  this.clearUsersData_andInputField
+          */}
+
       </div>
     )
   }

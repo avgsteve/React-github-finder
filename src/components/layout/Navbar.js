@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 const Navbar = ({ title, icon }) => {
-  //With destructuring parameter with variables title and icon
+  //With destructuring parameter with variables title and icon, render the content in H1 tag
 
   return (
     <nav className='navbar bg-primary'>
@@ -11,7 +11,8 @@ const Navbar = ({ title, icon }) => {
         <i className={icon} />
         {title}
       </h1>
-    </nav>);
+    </nav>
+  );
 
 }
 

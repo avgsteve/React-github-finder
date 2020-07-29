@@ -12,6 +12,7 @@ export class Search extends Component {
     searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
     toggleClearButton: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
   }
 
   onChange = (event) => {
@@ -26,13 +27,21 @@ export class Search extends Component {
   }
 
   onSubmit = (fomrSubmitEvent) => {
+
     fomrSubmitEvent.preventDefault();
-    console.log("\nThe text value from Form's onSubmit function in Seach.js:\n", this.state.text);
 
-    // Send this.state.text as argument to the Props method (callback function) : this.searchGithubUsers
-    this.props.searchUsers(this.state.text);
+    if (this.state.text === "") {
+      this.props.setAlert('Please enter something in the search field', 'light');
 
-    this.setState({ text: "" });
+    } else {
+
+      console.log("\nThe text value from Form's onSubmit function in Seach.js:\n", this.state.text);
+
+      // Send this.state.text as argument to the Props method (callback function) : this.searchGithubUsers
+      this.props.searchUsers(this.state.text);
+
+      this.setState({ text: "" });
+    }
 
   };
 

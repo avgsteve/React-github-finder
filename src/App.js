@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Navbar from './components/layout/Navbar';
-// import UserItem from './components/users/UserItem';
-import Users from './components/users/Users'; // "User" component uses UserItem and passes in the Props data as users Array
+import Alert from './components/layout/Alert';
+import Users from './components/users/Users';
 import Search from './components/users/Search';
+
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
@@ -15,10 +16,12 @@ class App extends Component {
   state = {
     users: [],
     loadingApi: false, //initial state indicates if the content has been loaded in componentDidMount()
+    alert: null, // set up by settingAlert method
   }
 
   static propTypes = {
-    searchGithubUsers: PropTypes.func, // to check searchGithubUsers must be a function
+    searchGithubUsers: PropTypes.func // .isRequired
+    // to check searchGithubUsers must be a function
   }
 
   // ==== 2) Initialize and change state properties upon loading the page
@@ -96,6 +99,25 @@ class App extends Component {
     this.setState({ users: [], loading: false })
   };
 
+  setAlert = (msg, type) => {
+    this.setState(
+      {
+        alert:
+        {
+          msg: msg, type: type
+        }
+      }
+    )
+
+    setTimeout(() => {
+      this.setState(
+        { alert: null }
+      )
+    }, 3000);
+
+
+  }
+
 
   // ==== 4) The Components to be rendered 
   render() {
@@ -113,11 +135,19 @@ class App extends Component {
 
         <div className="container">
           {/* Render "Users" component INSIDE a div. */}
+          <Alert alert=
+            {
+              this.state.alert
+            } />
 
           <Search
             searchUsers={this.searchGithubUsers}
             clearUsers={this.clearUsersData_andInputField}
             toggleClearButton={users.length > 0 ? true : false}
+            setAlert={
+              this.setAlert
+              // this setAlert is triggered by onSubmit event listening
+            }
           />
           {/* 
           #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.

@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
-
-// Emmet: rce
+// Emmet: rce 
 export class Search extends Component {
 
   state = {
-    text: '',
+    text: '', // the initial value for the input text field as search bar
   }
 
   static propType = {
@@ -15,13 +14,14 @@ export class Search extends Component {
   }
 
   onChange = (event) => {
+    // Listening to the event from which the value of the "text" field has been changed
 
-    // point the value of the "text" field to the event's target (input)
 
-    // this function was this.setState({ text: event.target.value });
-    // modified as below 
-    // (use (element) the value of attribute 'name' as state property's name):
     this.setState({ [event.target.name]: event.target.value });
+    // this function was modified from below: 
+    // this.setState({ text: event.target.value });
+
+    // The name (as in Object property) "event.target.name" equals "text" because, in the JSX , DOM element <input> has an attribute "name" which has a value called "text"
   }
 
   onSubmit = (event) => {

@@ -11,7 +11,7 @@ import './App.css';
 
 class App extends Component {
 
-  // ==== 1) Set up state obj for components
+  // ==== 1) Set-Ups for components
   state = {
     users: [],
     loadingApi: false, //initial state indicates if the content has been loaded in componentDidMount()
@@ -20,7 +20,6 @@ class App extends Component {
   static propTypes = {
     searchGithubUsers: PropTypes.func.isRequired, // to check searchGithubUsers must be a function
   }
-
 
   // ==== 2) Initialize and change state properties upon loading the page
   async componentDidMount() {
@@ -63,7 +62,7 @@ class App extends Component {
   } // end of 2) componentDidMount()
 
 
-  // ======= Prop methods =======
+  // =======3) PROPS methods =======
 
   // send GET req to API to find user
   searchGithubUsers = async text => {
@@ -98,31 +97,34 @@ class App extends Component {
   };
 
 
-  // ==== 3)  
-  render() { // pass data to components and display them
-
+  // ==== 4) The Components to be rendered 
+  render() {
+    /*
+    // #1 render() can pass data to components and display them
+    // #2 render() is needed ONLY WHEN this App is exported as Class.
+    */
     return (
       <div className='App'>
 
         <Navbar />
 
         <div className="container">
-          {/* Render "Users" component inside a div.
-          And Users component uses UserItems to render users' data */}
+          {/* Render "Users" component INSIDE a div. */}
 
           <Search searchUsers={this.searchGithubUsers} clearUsers={this.clearUsersData_andInputField} />
           {/* 
-          #1) The attribute "searchUsers" is triggered by Search.js and attribute's value "this.searchGithubUsers" is the "Prop methods" in this file
+          #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.
+          
+          The value in attribute: "this.searchGithubUsers" is the "Props methods" in this file
           #2) 
           */}
 
           <Users loadingApi={this.state.loadingApi} users={this.state.users} />
-          {/* 
-          #1) The attributes' value in <Users />  must match the function parameter names in Users component
+          {/* "Users" component uses "UserItems" to render users' data on page
 
-          #2) The attributes' value is linked to the objects in "state"
-            and the attributes&value (ex: loadingApi={this.state.loadingApi} )
-            will be passed into Users component as arguments
+          #1) The attributes' names like "loadingApi", "users" must match the function parameter names in Users.js (as arguments in arrow function component)
+
+          #2) The attributes' value is linked to the "state" obj in this file.
           */}
 
         </div>

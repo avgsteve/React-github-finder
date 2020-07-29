@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
 import Users from './components/users/Users';
@@ -131,47 +132,63 @@ class App extends Component {
     const { users, loadingApi } = this.state;
 
     return (
-      <div className='App'>
+      <Router>
+        {/* === React Router: Start === */}
 
-        <Navbar />
+        <div className='App'>
 
-        <div className="container">
-          {/* Render "Users" component INSIDE a div. */}
-          <Alert configs=
-            {
-              this.state.alertConfig
-            } />
+          <Navbar />
 
-          <Search
-            searchUsers={this.searchGithubUsers}
+          <div className="container"> {/* Render ALL components INSIDE a div. */}
 
-            clearUsers={this.clearUsersData_andInputField}
+            <Alert configs=
+              {
+                this.state.alertConfig
+              } />
 
-            toggleClearButton={users.length > 0 ? true : false}
+            <Switch>
 
-            empty_input_alert={
-              this.setAlert
-              // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
-            }
-          />
-          {/* 
-          #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.
-          
-          The value in attribute: "this.searchGithubUsers" is the "Props methods" in this file
-          #2) 
-          */}
+              <Route exact path='/' render=
+                {props =>
+                  (
+                    <Fragment>
 
-          <Users loadingApi={loadingApi} users={this.state.users} />
-          {/* "Users" component uses "UserItems" to render users' data on page
+                      <Search
+                        searchUsers={this.searchGithubUsers}
+                        clearUsers={this.clearUsersData_andInputField}
+                        toggleClearButton={users.length > 0 ? true : false}
+                        empty_input_alert={
+                          this.setAlert
+                          // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
+                        } />
 
-          #1) The attributes' names like "loadingApi", "users" must match the function parameter names in Users.js (as arguments in arrow function component)
+                      {/* 
+                        #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.
+                        
+                        The value in attribute: "this.searchGithubUsers" is the "Props methods" in this file
+                        #2) 
+                        */}
 
-          #2) The attributes' value is linked to the "state" obj in this file.
-          */}
+                      <Users loadingApi={loadingApi} users={this.state.users} />
 
-        </div>
+                      {/* "Users" component uses "UserItems" to render users' data on page
 
-      </div>
+                        #1) The attributes' names like "loadingApi", "users" must match the function parameter names in Users.js (as arguments in arrow function component)
+
+                        #2) The attributes' value is linked to the "state" obj in this file.
+                        */}
+
+                    </Fragment>
+                  )
+                }
+              />
+
+            </Switch>
+          </div>
+
+        </div> {/* === end of <div className='App'> == */}
+      </Router>
+
     );
   }
 

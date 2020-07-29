@@ -18,33 +18,32 @@ class App extends Component {
   }
 
   static propTypes = {
-    searchGithubUsers: PropTypes.func.isRequired, // to check searchGithubUsers must be a function
+    searchGithubUsers: PropTypes.func, // to check searchGithubUsers must be a function
   }
 
   // ==== 2) Initialize and change state properties upon loading the page
   async componentDidMount() {
 
     this.setState( // changes the properties in the "state" object
-      { loadingApi: true }
+      { loadingApi: false }
     );
 
-    setTimeout( //use setTimeout for testing purpose
+    // setTimeout( //use setTimeout for testing purpose
+    //   async () => {
 
-      async () => {
+    //     // const res = await axios.get('https://api.github.com/users'); //still async/await
 
-        // const res = await axios.get('https://api.github.com/users'); //still async/await
+    //     const res = await axios.get('https://api.github.com/users', {
+    //       headers: {
+    //         Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+    //       }
+    //     })
 
-        const res = await axios.get('https://api.github.com/users', {
-          headers: {
-            Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
-          }
-        })
+    //     this.setState({ users: res.data, loadingApi: false });
 
-        this.setState({ users: res.data, loadingApi: false });
+    //     console.log('fetched!');
 
-        console.log('fetched!');
-
-      }, 600);
+    //   }, 600);
 
     // const fetchedData = await axios.get('https://api.github.com/users');
     // // .then(responseFromAPI => console.log(responseFromAPI.data));
@@ -89,6 +88,7 @@ class App extends Component {
 
   }
 
+
   clearUsersData_andInputField = () => {
     // for testing
     console.log(`\nUsers' data and search field have been cleared!\n`);
@@ -103,6 +103,9 @@ class App extends Component {
     // #1 render() can pass data to components and display them
     // #2 render() is needed ONLY WHEN this App is exported as Class.
     */
+
+    const { users, loadingApi } = this.state;
+
     return (
       <div className='App'>
 
@@ -111,7 +114,11 @@ class App extends Component {
         <div className="container">
           {/* Render "Users" component INSIDE a div. */}
 
-          <Search searchUsers={this.searchGithubUsers} clearUsers={this.clearUsersData_andInputField} />
+          <Search
+            searchUsers={this.searchGithubUsers}
+            clearUsers={this.clearUsersData_andInputField}
+            toggleClearButton={users.length > 0 ? true : false}
+          />
           {/* 
           #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.
           
@@ -119,7 +126,7 @@ class App extends Component {
           #2) 
           */}
 
-          <Users loadingApi={this.state.loadingApi} users={this.state.users} />
+          <Users loadingApi={loadingApi} users={this.state.users} />
           {/* "Users" component uses "UserItems" to render users' data on page
 
           #1) The attributes' names like "loadingApi", "users" must match the function parameter names in Users.js (as arguments in arrow function component)

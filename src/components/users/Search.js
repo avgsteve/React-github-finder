@@ -31,7 +31,7 @@ export class Search extends Component {
     fomrSubmitEvent.preventDefault();
 
     if (this.state.text === "") {
-      this.props.setAlert('Please enter something in the search field', 'light');
+      this.props.empty_input_alert('Please enter something in the search field', 'light');
 
     } else {
 

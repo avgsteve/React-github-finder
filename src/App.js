@@ -16,7 +16,7 @@ class App extends Component {
   state = {
     users: [],
     loadingApi: false, //initial state indicates if the content has been loaded in componentDidMount()
-    alert: null, // set up by settingAlert method
+    alertConfig: null, // set up by settingAlert method
   }
 
   static propTypes = {
@@ -100,9 +100,13 @@ class App extends Component {
   };
 
   setAlert = (msg, type) => {
+
+    console.log("\n\nthis:\n\n");
+    console.log(this);
+
     this.setState(
       {
-        alert:
+        alertConfig:
         {
           msg: msg, type: type
         }
@@ -111,7 +115,7 @@ class App extends Component {
 
     setTimeout(() => {
       this.setState(
-        { alert: null }
+        { alertConfig: null }
       )
     }, 3000);
 
@@ -137,14 +141,14 @@ class App extends Component {
           {/* Render "Users" component INSIDE a div. */}
           <Alert alert=
             {
-              this.state.alert
+              this.state.alertConfig
             } />
 
           <Search
             searchUsers={this.searchGithubUsers}
             clearUsers={this.clearUsersData_andInputField}
             toggleClearButton={users.length > 0 ? true : false}
-            setAlert={
+            empty_input_alert={
               this.setAlert
               // this setAlert is triggered by onSubmit event listening
             }

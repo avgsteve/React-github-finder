@@ -100,9 +100,7 @@ class App extends Component {
   };
 
   setAlert = (msg, type) => {
-
-    console.log("\n\nthis:\n\n");
-    console.log(this);
+    console.log('\n\n"this" obj in setAlert() in App.js:\n', this); //
 
     this.setState(
       {
@@ -139,18 +137,21 @@ class App extends Component {
 
         <div className="container">
           {/* Render "Users" component INSIDE a div. */}
-          <Alert alert=
+          <Alert configs=
             {
               this.state.alertConfig
             } />
 
           <Search
             searchUsers={this.searchGithubUsers}
+
             clearUsers={this.clearUsersData_andInputField}
+
             toggleClearButton={users.length > 0 ? true : false}
+
             empty_input_alert={
               this.setAlert
-              // this setAlert is triggered by onSubmit event listening
+              // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
             }
           />
           {/* 

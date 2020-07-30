@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 
-const UserItem = ({ user: { login, avatar_url, html_url } }) => {
+const UserItem = (
+  { user: { login, avatar_url, html_url }
+    // "login" is the user name (also the user id) to be attached to /user/ URI to display user's page on Github
+
+  }) => {
 
   // Removed code: const {  } = props.user;  and use { user: { login, avatar_url, html_url } } as parameters instead.
 
@@ -16,9 +21,11 @@ const UserItem = ({ user: { login, avatar_url, html_url } }) => {
 
       <h3>{login}</h3>
 
-      <a href={html_url} className='btn btn-dark btn-sm my-1'>
-        More
-        </a>
+      <div>
+        <Link to={`/user/${login}`} className='btn btn-dark btn-sm my-1'>
+          More
+        </Link>
+      </div>
 
     </div>
   );

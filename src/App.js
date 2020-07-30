@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
 import Users from './components/users/Users';
+import User from './components/users/User'; // display single user's profil page
 import Search from './components/users/Search';
 import About from './components/pages/About';
 
@@ -17,7 +18,9 @@ class App extends Component {
   // ==== 1) Set-Ups for components
   state = {
     users: [],
+    state_singleUserData: {},
     loadingApi: false, //initial state indicates if the content has been loaded in componentDidMount()
+    state_LoadingSpinner: false,
     alertConfig: null, // set up by settingAlert method
   }
 
@@ -30,7 +33,7 @@ class App extends Component {
   async componentDidMount() {
 
     this.setState( // changes the properties in the "state" object
-      { loadingApi: false }
+      { state_LoadingSpinner: false }
     );
 
     // setTimeout( //use setTimeout for testing purpose
@@ -71,7 +74,7 @@ class App extends Component {
   // send GET req to API to find user
   searchGithubUsers = async text => {
 
-    this.setState({ loadingApi: true });
+    this.setState({ state_LoadingSpinner: true });
 
     // for testing
     console.log('==> Text input received in method "searchUsers":\n', text);
@@ -86,13 +89,44 @@ class App extends Component {
     );
 
     // use result data to update the objects in state
-    this.setState({ users: res.data.items, loadingApi: false });
+    this.setState({ users: res.data.items, state_LoadingSpinner: false });
 
     // for testing
-    console.log('User query result fetched!');
+    console.log('User query result fetched!\n\n');
 
   }
 
+
+  getSingleUserData = async username => {
+
+    this.setState({ state_LoadingSpinner: true });
+
+    // for testing
+    console.log('==> Current username received in "getSingleUserData":\n', username);
+
+    // get results from API
+    const response_userProfile = await axios.get(`https://api.github.com/users/${username}`,
+      {
+        headers: {
+          Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+        }
+      }
+    );
+
+    // For testing, log results from API
+    console.log('Single user\'s data from Github API:\n');
+    console.log(response_userProfile.data);
+
+
+    // Update the object "state_singleUserData" in state, 
+    this.setState({
+      state_singleUserData: response_userProfile.data,
+      state_LoadingSpinner: false
+    });
+
+
+
+  }
 
   clearUsersData_andInputField = () => {
     // for testing
@@ -130,7 +164,8 @@ class App extends Component {
     // #2 render() is needed ONLY WHEN this App is exported as Class.
     */
 
-    const { users, loadingApi } = this.state;
+    const { users, state_singleUserData, state_LoadingSpinner } = this.state;
+    // pull out the data from this.state and assign the data by destucturing
 
     return (
       <Router>
@@ -170,11 +205,11 @@ class App extends Component {
                         #2) 
                         */}
 
-                      <Users loadingApi={loadingApi} users={this.state.users} />
+                      <Users stateOf_displayLoadingSpinner={state_LoadingSpinner} users={this.state.users} />
 
                       {/* "Users" component uses "UserItems" to render users' data on page
 
-                        #1) The attributes' names like "loadingApi", "users" must match the function parameter names in Users.js (as arguments in arrow function component)
+                        #1) The attributes' names like "stateOf_displayLoadingSpinner", "users" must match the function parameter names in Users.js (as arguments in arrow function component)
 
                         #2) The attributes' value is linked to the "state" obj in this file.
                         */}
@@ -186,6 +221,33 @@ class App extends Component {
 
               <Route exact path='/about' component={About} />
 
+              <Route exact path='/user/:username' render={props => (
+
+
+                < User // display single user's profil page
+
+                  // When mounting this component, its componentDidMount() calls getSingleUserData() from props.methods
+
+                  {...props}
+
+                  prop_getUserData={this.getSingleUserData
+                    // need to pass username to this method to query user's profile data via Github API
+                  }
+
+                  prop_userData={
+                    state_singleUserData
+                    // singleUserData equals to this.state_singleUserData obj for data from HTTP response from this.getSingleUserData()
+                  }
+
+                  prop_state_LoadingSpinner={state_LoadingSpinner
+                    // The loading status to toggle spinner icon while loading the data from API query
+                  }
+
+                  prop_allProos={props}
+                />
+
+
+              )} />
 
             </Switch>
           </div>

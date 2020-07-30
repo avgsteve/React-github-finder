@@ -4,15 +4,16 @@ import UserItem from './UserItem';
 
 import Spinner from '../layout/Spinner';
 
-const Users = ({ users, loadingApi }) => { // 2) Being used by App.js, get "state" from App.js (props) first
+const Users = ({ users, stateOf_displayLoadingSpinner }) => { // 2) Being used by App.js, get "state" from App.js (props) first
 
 
   // 3) === (NO NEED for render() ) when using Arrow function as exported component ) ===
   // In render(), use Component "UserItem" and pass in Props "key" and "user"
 
   // this IF condition will be executed every time the state is changed in Main Components (App.js)
-  if (loadingApi) {
+  if (stateOf_displayLoadingSpinner) {
     return <Spinner />  // display the loader if the loading API process is ongoing
+
   } else { // if loading is finished (loadingApi set back to false),
 
     // 4) create CSS style for the <div style={userStyle}> to wrap UserItem

@@ -1,106 +1,56 @@
-import React, { Fragment, useEffect, useContext } from 'react';
-import Spinner from '../layout/Spinner';
-import Repos from '../repos/Repos';
-import { Link } from 'react-router-dom';
-import GithubContext from '../../context/github/githubContext';
+import React, { Component } from 'react'
 
-const User = ({ match }) => {
-  const githubContext = useContext(GithubContext);
 
-  const { getUser, loading, user, repos, getUserRepos } = githubContext;
+export class User extends Component {
 
-  useEffect(() => {
-    getUser(match.params.login);
-    getUserRepos(match.params.login);
-    // eslint-disable-next-line
-  }, []);
+  // Whenever this component "User" is mounted by any other component, it will trigger "componentDidMount()" inside the <User> component to do something
+  componentDidMount() {
 
-  const {
-    name,
-    company,
-    avatar_url,
-    location,
-    bio,
-    blog,
-    login,
-    html_url,
-    followers,
-    following,
-    public_repos,
-    public_gists,
-    hireable
-  } = user;
+    console.log('\nMsg: The component <User/> has been mounted!');
 
-  if (loading) return <Spinner />;
+    console.log('\n\nMsg: Below is the props in component <User/>:\n');
 
-  return (
-    <Fragment>
-      <Link to='/' className='btn btn-light'>
-        Back To Search
-      </Link>
-      Hireable:{' '}
-      {hireable ? (
-        <i className='fas fa-check text-success' />
-      ) : (
-        <i className='fas fa-times-circle text-danger' />
-      )}
-      <div className='card grid-2'>
-        <div className='all-center'>
-          <img
-            src={avatar_url}
-            className='round-img'
-            alt=''
-            style={{ width: '150px' }}
-          />
-          <h1>{name}</h1>
-          <p>Location: {location}</p>
-        </div>
-        <div>
-          {bio && (
-            <Fragment>
-              <h3>Bio</h3>
-              <p>{bio}</p>
-            </Fragment>
-          )}
-          <a href={html_url} className='btn btn-dark my-1'>
-            Visit Github Profile
-          </a>
-          <ul>
-            <li>
-              {login && (
-                <Fragment>
-                  <strong>Username: </strong> {login}
-                </Fragment>
-              )}
-            </li>
+    console.log(this.props);
 
-            <li>
-              {company && (
-                <Fragment>
-                  <strong>Company: </strong> {company}
-                </Fragment>
-              )}
-            </li>
 
-            <li>
-              {blog && (
-                <Fragment>
-                  <strong>Website: </strong> {blog}
-                </Fragment>
-              )}
-            </li>
-          </ul>
-        </div>
+    /* 
+    When reached this URI host/user/:username, inside the <Route exact path='/user/:username' /> will mount the component <User> and use the property method "getSingleUserData" via the property "prop_getUserData" inside App.js
+     */
+
+    this.props.prop_getUserData(this.props.match.params.username);
+
+    // this.props.match.params.username points to the "username"'s value via component <Route exact path='/user/:username'   in App.js
+
+  }
+
+  render() {
+
+    //get data obj from <User userData={ state_singleUserData } /> in App.js
+
+    const {
+      name,
+      avatar_url,
+      location,
+      bio,
+      blog,
+      login,
+      html_url,
+      followers,
+      following,
+      public_repos,
+      public_gists,
+      hireable
+    } = this.props.prop_userData
+
+
+
+
+    return (
+      <div>
+        {name}
       </div>
-      <div className='card text-center'>
-        <div className='badge badge-primary'>Followers: {followers}</div>
-        <div className='badge badge-success'>Following: {following}</div>
-        <div className='badge badge-light'>Public Repos: {public_repos}</div>
-        <div className='badge badge-dark'>Public Gists: {public_gists}</div>
-      </div>
-      <Repos repos={repos} />
-    </Fragment>
-  );
-};
+    )
+  }
+}
 
-export default User;
+export default User

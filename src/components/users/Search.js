@@ -10,7 +10,7 @@ export class Search extends Component {
 
   static propType = {
     searchUsers: PropTypes.func.isRequired,
-    clearUsers: PropTypes.func.isRequired,
+    prop_clearUsers: PropTypes.func.isRequired,
     toggleClearButton: PropTypes.bool.isRequired,
     setAlert: PropTypes.func.isRequired,
   }
@@ -55,7 +55,7 @@ export class Search extends Component {
   render() {
 
     //variables assigned with value from this.props in Components in <Search /> in App.js
-    const { clearUsers, toggleClearButton } = this.props;
+    const { prop_clearUsers, prop_toggleClearButton } = this.props;
 
     return (
 
@@ -91,17 +91,17 @@ export class Search extends Component {
 
         {/* ==== Sub-component#3: Clear button (outside and below the Form) ==== */}
         {
-          toggleClearButton // {toggleClearButton} equals to {this.props.toggleClearButton}
+          prop_toggleClearButton // {prop_toggleClearButton} equals to {this.props.prop_toggleClearButton}
 
           &&
 
           (
-            <button className="btn btn-light btn-block" onClick={clearUsers} >
+            <button className="btn btn-light btn-block" onClick={prop_clearUsers} >
               Clear results
             </button>
           )
-          // #1 The value : {clearUsers} equals to {this.props.clearUsers}
-          // #2 The value the attribute "this.props.clearUsers" points to the attribute "clearUsers=" from  component <Search /> used in App.js 
+          // #1 The value : {prop_clearUsers} equals to {this.props.prop_clearUsers}
+          // #2 The value the attribute "this.props.prop_clearUsers" points to the attribute "clearUsers=" from  component <Search /> used in App.js 
 
           // #3 The clearUsers= points to the props method in App.js : "this.clearUsersData_andInputField
 

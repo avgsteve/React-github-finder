@@ -2,7 +2,9 @@ import React from 'react';
 import UserItem from './UserItem';
 // 1) Use and send data to "UserItem" component to render data
 
+
 import Spinner from '../layout/Spinner';
+// import { Fragment } from 'react';
 
 const Users = ({ users, stateOf_displayLoadingSpinner }) => { // 2) Being used by App.js, get "state" from App.js (props) first
 
@@ -26,13 +28,21 @@ const Users = ({ users, stateOf_displayLoadingSpinner }) => { // 2) Being used b
     // 5) Wrap the function and component UserItem inside the div
     // user={user} is the "Props" data for UserItem component
     return (
-      <div style={divStyle} >
-        { // JSX Syntax
-          users.map(
-            user => (<UserItem key={user.id} user={user} />)
-          )
-        }
+
+      <div>
+        <h2> Current Component: Users </h2>
+        <p>----------------------------------------------</p>
+        <div style={divStyle} >
+
+          { // JSX Syntax
+            users.map(
+              user => (<UserItem key={user.id} user={user} />)
+            )
+          }
+
+        </div>
       </div>
+
     );
 
   }

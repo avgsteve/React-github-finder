@@ -191,8 +191,10 @@ class App extends Component {
 
                       <Search
                         searchUsers={this.searchGithubUsers}
-                        clearUsers={this.clearUsersData_andInputField}
-                        toggleClearButton={users.length > 0 ? true : false}
+                        prop_clearUsers={this.clearUsersData_andInputField}
+
+                        prop_toggleClearButton={users.length > 0 ? true : false}
+
                         empty_input_alert={
                           this.setAlert
                           // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js

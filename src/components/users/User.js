@@ -47,6 +47,13 @@ export class User extends Component {
 
     return (
       <div>
+
+        <div>
+          <h2>
+            {`Current Component: <${this.constructor.name}`} /> </h2>
+          <p>----------------------------------------------</p>
+        </div>
+
         {name}
       </div>
     )

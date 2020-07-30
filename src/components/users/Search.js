@@ -9,7 +9,7 @@ export class Search extends Component {
   }
 
   static propType = {
-    searchUsers: PropTypes.func.isRequired,
+    prop_searchUsers: PropTypes.func.isRequired,
     prop_clearUsers: PropTypes.func.isRequired,
     toggleClearButton: PropTypes.bool.isRequired,
     setAlert: PropTypes.func.isRequired,
@@ -44,7 +44,7 @@ export class Search extends Component {
       console.log("\nThe text value from Form's onSubmit function in Seach.js:\n", this.state.text);
 
       // Send this.state.text as argument to the Props method (callback function) : this.searchGithubUsers
-      this.props.searchUsers(this.state.text);
+      this.props.prop_searchUsers(this.state.text);
 
       this.setState({ text: "" });
     }

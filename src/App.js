@@ -25,8 +25,8 @@ class App extends Component {
   }
 
   static propTypes = {
-    searchGithubUsers: PropTypes.func // .isRequired
-    // to check searchGithubUsers must be a function
+    searchUsersByName: PropTypes.func // .isRequired
+    // to check searchUsersByName must be a function
   }
 
   // ==== 2) Initialize and change state properties upon loading the page
@@ -36,43 +36,13 @@ class App extends Component {
       { state_LoadingSpinner: false }
     );
 
-    // setTimeout( //use setTimeout for testing purpose
-    //   async () => {
-
-    //     // const res = await axios.get('https://api.github.com/users'); //still async/await
-
-    //     const res = await axios.get('https://api.github.com/users', {
-    //       headers: {
-    //         Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
-    //       }
-    //     })
-
-    //     this.setState({ users: res.data, loadingApi: false });
-
-    //     console.log('fetched!');
-
-    //   }, 600);
-
-    // const fetchedData = await axios.get('https://api.github.com/users');
-    // // .then(responseFromAPI => console.log(responseFromAPI.data));
-    // console.log('\n=== The data fetched from response of Github API: === \n');
-    // console.log(fetchedData);
-
-    // this.setState(
-    //   {
-    //     users: fetchedData.data,
-    //     loadingApi: false
-    //   });
-
-    //ref:  https://reactjs.org/docs/react-component.html#componentdidmount
-
   } // end of 2) componentDidMount()
 
 
   // =======3) PROPS methods =======
 
   // send GET req to API to find user
-  searchGithubUsers = async text => {
+  searchUsersByName = async text => {
 
     this.setState({ state_LoadingSpinner: true });
 
@@ -88,6 +58,7 @@ class App extends Component {
       }
     );
 
+
     // use result data to update the objects in state
     this.setState({ users: res.data.items, state_LoadingSpinner: false });
 
@@ -101,10 +72,11 @@ class App extends Component {
 
     this.setState({ state_LoadingSpinner: true });
 
-    // for testing
-    console.log('==> Current username received in "getSingleUserData":\n', username);
 
-    // get results from API
+    // for testing
+    // console.log('==> Current username received in "getSingleUserData":\n', username);
+
+    // === get results from API ===
     const response_userProfile = await axios.get(`https://api.github.com/users/${username}`,
       {
         headers: {
@@ -114,8 +86,8 @@ class App extends Component {
     );
 
     // For testing, log results from API
-    console.log('Single user\'s data from Github API:\n');
-    console.log(response_userProfile.data);
+    // console.log('Single user\'s data from Github API:\n');
+    // console.log(response_userProfile.data);
 
 
     // Update the object "state_singleUserData" in state, 
@@ -124,9 +96,8 @@ class App extends Component {
       state_LoadingSpinner: false
     });
 
-
-
   }
+
 
   clearUsersData_andInputField = () => {
     // for testing
@@ -177,7 +148,7 @@ class App extends Component {
 
           <div className="container"> {/* Render ALL components INSIDE a div. */}
 
-            <Alert configs=
+            <Alert displayConfigs=
               {
                 this.state.alertConfig
               } />
@@ -190,7 +161,7 @@ class App extends Component {
                     <Fragment>
 
                       <Search
-                        searchUsers={this.searchGithubUsers}
+                        prop_searchUsers={this.searchUsersByName}
                         prop_clearUsers={this.clearUsersData_andInputField}
 
                         prop_toggleClearButton={users.length > 0 ? true : false}
@@ -203,7 +174,7 @@ class App extends Component {
                       {/* 
                         #1) The attribute "searchUsers" is triggered by Search.js's form "onSubmit" event listener.
                         
-                        The value in attribute: "this.searchGithubUsers" is the "Props methods" in this file
+                        The value in attribute: "this.searchUsersByName" is the "Props methods" in this file
                         #2) 
                         */}
 
@@ -230,7 +201,7 @@ class App extends Component {
 
                   // When mounting this component, its componentDidMount() calls getSingleUserData() from props.methods
 
-                  {...props}
+                  {...props} // this will pass in the Objects as props from Router
 
                   prop_getUserData={this.getSingleUserData
                     // need to pass username to this method to query user's profile data via Github API
@@ -241,7 +212,7 @@ class App extends Component {
                     // singleUserData equals to this.state_singleUserData obj for data from HTTP response from this.getSingleUserData()
                   }
 
-                  prop_state_LoadingSpinner={state_LoadingSpinner
+                  prop_LoadingSpinner={state_LoadingSpinner
                     // The loading status to toggle spinner icon while loading the data from API query
                   }
 

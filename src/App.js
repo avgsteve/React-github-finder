@@ -19,9 +19,10 @@ class App extends Component {
   state = {
     users: [],
     state_singleUserData: {},
-    loadingApi: false, //initial state indicates if the content has been loaded in componentDidMount()
-    state_LoadingSpinner: false,
+    state_userRepos_inArray: [],
+    state_LoadingSpinner: false, //initial state indicates if the content has been loaded in componentDidMount()
     alertConfig: null, // set up by settingAlert method
+
   }
 
   static propTypes = {
@@ -99,6 +100,37 @@ class App extends Component {
   }
 
 
+  getUserRepos = async username => {
+
+    this.setState({ state_LoadingSpinner: true });
+
+    // for testing
+    // console.log('==> Current username received in "getSingleUserData":\n', username);
+
+    // === get results from API ===
+    const response_userRepos = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`,
+      {
+        headers: {
+          Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+        }
+      }
+    );
+
+    // // For testing, log results from API
+    console.log('Single user\'s repo from Github API:\n');
+    console.log(response_userRepos.data);
+
+
+    // Update the object "state_singleUserData" in state, 
+    this.setState({
+      state_userRepos_inArray: response_userRepos.data,
+      state_LoadingSpinner: false
+    });
+
+  }
+
+
+
   clearUsersData_andInputField = () => {
     // for testing
     console.log(`\nUsers' data and search field have been cleared!\n`);
@@ -135,8 +167,9 @@ class App extends Component {
     // #2 render() is needed ONLY WHEN this App is exported as Class.
     */
 
-    const { users, state_singleUserData, state_LoadingSpinner } = this.state;
-    // pull out the data from this.state and assign the data by destucturing
+    // === Variables for components ===
+    const {
+      users, state_singleUserData, state_LoadingSpinner, state_userRepos_inArray } = this.state;
 
     return (
       <Router>
@@ -194,6 +227,9 @@ class App extends Component {
 
               <Route exact path='/about' component={About} />
 
+
+              {/* ==== For single user's profile and repos ==== */}
+
               <Route exact path='/user/:username' render={props => (
 
 
@@ -211,6 +247,15 @@ class App extends Component {
                     state_singleUserData
                     // singleUserData equals to this.state_singleUserData obj for data from HTTP response from this.getSingleUserData()
                   }
+
+                  prop_getUserRepo={this.getUserRepos
+                    // need to pass username to this method to query user's profile data via Github API
+                  }
+
+
+                  prop_userRepos={state_userRepos_inArray
+                  } // get repos data from variable "state_userRepos_inArray" by destructuring this.state
+
 
                   prop_LoadingSpinner={state_LoadingSpinner
                     // The loading status to toggle spinner icon while loading the data from API query

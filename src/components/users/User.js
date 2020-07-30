@@ -2,6 +2,9 @@ import React, { Fragment, Component } from 'react';
 
 import Spinner from '../layout/Spinner';
 
+import Repos from '../repos/Repos';
+
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -25,12 +28,20 @@ export class User extends Component {
 
     // this.props.match.params.username points to the "username"'s value via component <Route exact path='/user/:username'   in App.js
 
-  }
+
+    this.props.prop_getUserRepo(this.props.match.params.username);
+
+
+
+  } // === end of  componentDidMount()  ===
+
 
   static propTypes = {
     prop_LoadingSpinner: PropTypes.bool,
-    prop_userData: PropTypes.object.isRequired,
     prop_getUserData: PropTypes.func.isRequired,
+    prop_userData: PropTypes.object.isRequired,
+    prop_getUserRepo: PropTypes.func.isRequired,
+    prop_userRepos: PropTypes.array.isRequired
   }
 
 
@@ -54,7 +65,14 @@ export class User extends Component {
       hireable
     } = this.props.prop_userData
 
-    const { prop_LoadingSpinner } = this.props; // Read the Boolean value for "state_LoadingSpinner" in App.js via User tag's prop attribute "prop_LoadingSpinner", 
+    const {
+      prop_LoadingSpinner
+    } = this.props; // Read the Boolean value for "state_LoadingSpinner" in App.js via User tag's prop attribute "prop_LoadingSpinner", 
+
+
+    // console.log('\n\nMsg: Below is the "this.props.prop_userRepos" in component <User/>:\n');
+    // console.log(this.props.prop_userRepos);
+
 
     if (prop_LoadingSpinner) {
       return <Spinner />
@@ -98,7 +116,7 @@ export class User extends Component {
           <div className="all-center" title="sub-grid #1">
 
             <img src={avatar_url}
-              className="round-img my" alt={`profile picture of ${name}`}
+              className="round-img my" alt={`profile pic of ${name}`}
               style={{ width: '150px' }}
             />
 
@@ -181,6 +199,15 @@ export class User extends Component {
           </div>
 
         </div>
+
+        {/* === Third section : Repos === */}
+
+
+        <Repos reposArray={ //use <Repos/> Component and its attribute "reposArray" to send Array data to <Repos/> as argument
+
+          this.props.prop_userRepos
+          // this.props.prop_userRepos is from the attribute "prop_userRepos" from component <User /> used in app.js
+        } />
 
 
       </div >

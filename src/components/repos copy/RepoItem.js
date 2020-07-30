@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RepoItem = ({ repoData }) => {
-
+const RepoItem = ({ repo }) => {
   return (
     <div className='card'>
       <h3>
-        <a href={repoData.html_url} target="_blank" rel="noopener noreferrer"> {repoData.name}
-        </a>
+        <a href={repo.html_url}>{repo.name}</a>
       </h3>
     </div>
   );
 };
 
 RepoItem.propTypes = {
-  repoData: PropTypes.object.isRequired
+  repo: PropTypes.object.isRequired
 };
 
 export default RepoItem;

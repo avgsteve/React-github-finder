@@ -6,10 +6,10 @@ import Users from './components/users/Users';
 import User from './components/users/User'; // display single user's profil page
 import Search from './components/users/Search';
 import About from './components/pages/About';
-
 // import PropTypes from 'prop-types';
-
 import axios from 'axios';
+
+import GithubState from './context/github/GithubState';
 
 import './App.css';
 
@@ -123,91 +123,92 @@ const App = () => {
 
 
   return (
-    <Router>
-      {/* === React Router: Start === */}
+    <GithubState>
+      <Router>
+        {/* === React Router: Start === */}
 
-      <div className='App'>
+        <div className='App'>
 
-        <Navbar />
+          <Navbar />
 
-        <div className="container"> {/* Render ALL components INSIDE a div. */}
+          <div className="container"> {/* Render ALL components INSIDE a div. */}
 
-          <Alert displayConfigs=
-            {
-              state_alertConfig
-            } />
+            <Alert displayConfigs=
+              {
+                state_alertConfig
+              } />
 
-          <Switch>
+            <Switch>
 
-            <Route exact path='/' render=
-              {props =>
-                (
-                  <Fragment>
+              <Route exact path='/' render=
+                {props =>
+                  (
+                    <Fragment>
 
-                    <Search
-                      prop_searchUsers={getUsersByName}
-                      prop_clearUsers={clearUsersData}
+                      <Search
+                        prop_searchUsers={getUsersByName}
+                        prop_clearUsers={clearUsersData}
 
-                      prop_toggleClearButton={state_searchResults_usersData.length > 0 ? true : false}
+                        prop_toggleClearButton={state_searchResults_usersData.length > 0 ? true : false}
 
-                      empty_input_alert={
-                        setAlert
-                        // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
-                      } />
+                        empty_input_alert={
+                          setAlert
+                          // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
+                        } />
 
-                    <Users
-                      stateOf_displayLoadingSpinner={state_LoadingSpinner}
-                      usersData={state_searchResults_usersData} />
+                      <Users
+                        stateOf_displayLoadingSpinner={state_LoadingSpinner}
+                        usersData={state_searchResults_usersData} />
 
-                  </Fragment>
-                )
-              }
-            />
-
-            <Route exact path='/about' component={About} />
-
-
-            {/* ==== For single user's profile and repos ==== */}
-
-            <Route exact path='/user/:username' render={props => (
-
-
-              < User // display single user's profil page
-
-                {...props} // this will pass in the Objects as props from Router
-
-                prop_getUserData={getSingleUserData
-                  // need to pass username to this method to query user's profile data via Github API
+                    </Fragment>
+                  )
                 }
-
-                prop_userData={
-                  state_singleUserData
-                }
-
-                prop_getUserRepo={getUserRepos
-                  // need to pass username to this method to query user's profile data via Github API
-                }
-
-
-                prop_userRepos={state_userRepos_inArray
-                } // get repos data from variable "state_userRepos_inArray" by destructuring this.state
-
-
-                prop_LoadingSpinner={state_LoadingSpinner
-                }
-
-                prop_allProos={props}
               />
 
+              <Route exact path='/about' component={About} />
 
-            )} />
 
-          </Switch>
-        </div>
+              {/* ==== For single user's profile and repos ==== */}
 
-      </div> {/* === end of <div className='App'> == */}
-    </Router>
+              <Route exact path='/user/:username' render={props => (
 
+
+                < User // display single user's profil page
+
+                  {...props} // this will pass in the Objects as props from Router
+
+                  prop_getUserData={getSingleUserData
+                    // need to pass username to this method to query user's profile data via Github API
+                  }
+
+                  prop_userData={
+                    state_singleUserData
+                  }
+
+                  prop_getUserRepo={getUserRepos
+                    // need to pass username to this method to query user's profile data via Github API
+                  }
+
+
+                  prop_userRepos={state_userRepos_inArray
+                  } // get repos data from variable "state_userRepos_inArray" by destructuring this.state
+
+
+                  prop_LoadingSpinner={state_LoadingSpinner
+                  }
+
+                  prop_allProos={props}
+                />
+
+
+              )} />
+
+            </Switch>
+          </div>
+
+        </div> {/* === end of <div className='App'> == */}
+      </Router>
+    </GithubState>
   );
 
 }

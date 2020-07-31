@@ -7,7 +7,7 @@ import User from './components/users/User'; // display single user's profil page
 import Search from './components/users/Search';
 import About from './components/pages/About';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
@@ -15,12 +15,16 @@ import './App.css';
 
 const App = () => {
 
-  // ==== [state_Of_Obj, state_Setter] = useState(default_State) ===
-  const [state_searchResults_usersData, setState_UsersData] = useState([]);
+
+
+  const [
+    state_searchResults_usersData,
+    setState_UsersData] = useState([]); //default: empty Array. For <Users />
+
   const [state_singleUserData, setState_SingleUserData] = useState({}); //
   const [state_userRepos_inArray, setState_UserRepos] = useState([]); //
   const [state_LoadingSpinner, setState_LoadingState] = useState(false); //
-  const [state_alertConfig, setState_setAlert] = useState(null); // default: empty Array, set up by settingAlert method
+  const [state_alertConfig, setState_setAlert] = useState(null); //default: empty Array, set up by settingAlert method
 
 
   // send GET req to API to find user
@@ -43,7 +47,9 @@ const App = () => {
     // for testing
     console.log('User query result fetched!\n\n');
     setState_UsersData(res.data.items);
+
     setState_LoadingState(false);
+
   }
 
 
@@ -51,10 +57,11 @@ const App = () => {
 
     setState_LoadingState(true);
 
+
     // for testing
     // console.log('==> Current username received in "getSingleUserData":\n', username);
 
-    // === get user's profile ===
+    // === get results from API ===
     const response_userProfile = await axios.get(`https://api.github.com/users/${username}`,
       {
         headers: {
@@ -63,7 +70,7 @@ const App = () => {
       }
     );
 
-    // For testing, log out results from API
+    // For testing, log results from API
     // console.log('Single user\'s data from Github API:\n');
     // console.log(response_userProfile.data);
 
@@ -76,7 +83,7 @@ const App = () => {
 
     setState_LoadingState(true);
 
-    // for testing the user name from React Router's params
+    // for testing
     // console.log('==> Current username received in "getSingleUserData":\n', username);
 
     const response_userRepos = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`,
@@ -91,18 +98,21 @@ const App = () => {
     console.log('Single user\'s repo from Github API:\n');
     console.log(response_userRepos.data);
 
+
     // Update the object "state_singleUserData" in state, 
 
     setState_UserRepos(response_userRepos.data);
     setState_LoadingState(false);
 
+
   }
 
-  // Clear search results from page
-  const clearUsersData = () => {
 
+  const clearUsersData = () => {
+    // for testing
     console.log(`\nUsers' data and search field have been cleared!\n`);
 
+    console.log('User query result fetched!\n\n');
     setState_UsersData([]);
     setState_LoadingState(false);
 
@@ -121,6 +131,13 @@ const App = () => {
       }, 3000);
   }
 
+
+  // === Variables for components ===
+  // const {
+  //   state_searchResults_usersData,
+  //   state_singleUserData,
+  //   state_userRepos_inArray,
+  // } = this.state;
 
   return (
     <Router>

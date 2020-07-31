@@ -5,7 +5,16 @@ import Repos from '../repos/Repos';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const User = ({ prop_userData, prop_LoadingSpinner, prop_getUserData, prop_getUserRepo, match }) => {  // this.props.prop_userData
+const User = (
+  { props,
+    prop_userData,
+    prop_userRepos,
+    prop_LoadingSpinner,
+    prop_getUserData,
+    prop_getUserRepo,
+    match //
+  }
+) => {
 
   useEffect(() => {
 
@@ -19,12 +28,13 @@ const User = ({ prop_userData, prop_LoadingSpinner, prop_getUserData, prop_getUs
     // for testing
     console.log('\nMsg: The component <User/> has been mounted!');
     console.log('\n\nMsg: Below is the props in component <User/>:\n');
-    console.log(this.props);
+    console.log(props);
 
     // Use below "//eslint-disable-next-line" to disable warning message in console: React Hook useEffect has missing dependencies
     // eslint-disable-next-line
   }, [] // this argument makes this useEffect run only once
   );
+
 
   const {
     name,
@@ -59,7 +69,7 @@ const User = ({ prop_userData, prop_LoadingSpinner, prop_getUserData, prop_getUs
       {/* === For dev stage messages === */}
       <div>
         <h2>
-          {`Current Component: <${this.constructor.name}`}
+          {`Current Component: <User />`}
         </h2>
         <p>----------------------------------------------</p>
       </div>
@@ -178,13 +188,14 @@ const User = ({ prop_userData, prop_LoadingSpinner, prop_getUserData, prop_getUs
 
       <Repos reposArray={ //use <Repos/> Component and its attribute "reposArray" to send Array data to <Repos/> as argument
 
-        this.props.prop_userRepos
+        prop_userRepos
         // this.props.prop_userRepos is from the attribute "prop_userRepos" from component <User /> used in app.js
       } />
 
 
     </div >
-  )
+
+  ) // end od return (
 
 }
 

@@ -6,7 +6,7 @@ import UserItem from './UserItem';
 import Spinner from '../layout/Spinner';
 // import { Fragment } from 'react';
 
-const Users = ({ users, stateOf_displayLoadingSpinner }) => { // 2) Being used by App.js, get "state" from App.js (props) first
+const Users = ({ usersData, stateOf_displayLoadingSpinner }) => { // 2) Being used by App.js, get "state" from App.js (props) first
 
 
   // 3) === (NO NEED for render() ) when using Arrow function as exported component ) ===
@@ -35,7 +35,7 @@ const Users = ({ users, stateOf_displayLoadingSpinner }) => { // 2) Being used b
         <div style={divStyle} >
 
           { // JSX Syntax
-            users.map(
+            usersData.map(
               user => (<UserItem key={user.id} user={user} />)
             )
           }

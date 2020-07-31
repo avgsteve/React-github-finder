@@ -1,218 +1,199 @@
-import React, { Fragment, Component } from 'react';
-
+//eslint-disable-next-line
+import React, { Fragment, Component, useState, useEffect } from 'react';
 import Spinner from '../layout/Spinner';
-
 import Repos from '../repos/Repos';
-
-
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export class User extends Component {
+const User = ({ prop_userData, prop_LoadingSpinner, prop_getUserData, prop_getUserRepo, match }) => {  // this.props.prop_userData
 
-  // Whenever this component "User" is mounted by any other component, it will trigger "componentDidMount()" inside the <User> component to do something
-  componentDidMount() {
+  useEffect(() => {
 
+    prop_getUserData(match.params.username);
+
+    // match.params.username points to the "username"'s value via component <Route exact path='/user/:username'   in App.js
+
+    prop_getUserRepo(match.params.username);
+
+
+    // for testing
     console.log('\nMsg: The component <User/> has been mounted!');
-
     console.log('\n\nMsg: Below is the props in component <User/>:\n');
-
     console.log(this.props);
 
+    // Use below "//eslint-disable-next-line" to disable warning message in console: React Hook useEffect has missing dependencies
+    // eslint-disable-next-line
+  }, [] // this argument makes this useEffect run only once
+  );
 
-    /* 
-    When reached this URI host/user/:username, inside the <Route exact path='/user/:username' /> will mount the component <User> and use the property method "getSingleUserData" via the property "prop_getUserData" inside App.js
-     */
+  const {
+    name,
+    avatar_url,
+    location,
+    bio,
+    blog,
+    login,
+    html_url,
+    company,
+    followers,
+    following,
+    public_repos,
+    public_gists,
+    hireable
+  } = prop_userData // deconstructed from this.props.prop_userData
 
-    this.props.prop_getUserData(this.props.match.params.username);
 
-    // this.props.match.params.username points to the "username"'s value via component <Route exact path='/user/:username'   in App.js
-
-
-    this.props.prop_getUserRepo(this.props.match.params.username);
+  // console.log('\n\nMsg: Below is the "this.props.prop_userRepos" in component <User/>:\n');
+  // console.log(this.props.prop_userRepos);
 
 
+  if (prop_LoadingSpinner) {
+    return <Spinner />
 
-  } // === end of  componentDidMount()  ===
-
-
-  static propTypes = {
-    prop_LoadingSpinner: PropTypes.bool,
-    prop_getUserData: PropTypes.func.isRequired,
-    prop_userData: PropTypes.object.isRequired,
-    prop_getUserRepo: PropTypes.func.isRequired,
-    prop_userRepos: PropTypes.array.isRequired
   }
 
+  return (
 
-  render() {
+    <div>
 
-    //get data obj from <User userData={ state_singleUserData } /> in App.js
-
-    const {
-      name,
-      avatar_url,
-      location,
-      bio,
-      blog,
-      login,
-      html_url,
-      company,
-      followers,
-      following,
-      public_repos,
-      public_gists,
-      hireable
-    } = this.props.prop_userData
-
-    const {
-      prop_LoadingSpinner
-    } = this.props; // Read the Boolean value for "state_LoadingSpinner" in App.js via User tag's prop attribute "prop_LoadingSpinner", 
-
-
-    // console.log('\n\nMsg: Below is the "this.props.prop_userRepos" in component <User/>:\n');
-    // console.log(this.props.prop_userRepos);
-
-
-    if (prop_LoadingSpinner) {
-      return <Spinner />
-    }
-
-    return (
-
-
-
+      {/* === For dev stage messages === */}
       <div>
+        <h2>
+          {`Current Component: <${this.constructor.name}`}
+        </h2>
+        <p>----------------------------------------------</p>
+      </div>
 
-        {/* === For dev stage messages === */}
-        <div>
-          <h2>
-            {`Current Component: <${this.constructor.name}`} /> </h2>
-          <p>----------------------------------------------</p>
-        </div>
+      {/* === React router's Link component === */}
 
-        {/* === React router's Link component === */}
+      <Link to='/' className='btn btn-light'> Back to search </Link>
 
-        <Link to='/' className='btn btn-light'> Back to search </Link>
+      {/* === User's name and hireable info === */}
 
-        {/* === User's name and hireable info === */}
+      <h1>{name}</h1>
 
-        <h1>{name}</h1>
-
-        <p> Hireable: {'  '}
-          <span>
-            {hireable ?
-              <i className="fas fa-check text-success" /> :
-              <i className="fas fa-times-circle text-danger" />
-            }
-          </span>
-        </p>
+      <p> Hireable: {'  '}
+        <span>
+          {hireable ?
+            <i className="fas fa-check text-success" /> :
+            <i className="fas fa-times-circle text-danger" />
+          }
+        </span>
+      </p>
 
 
-        {/* === First div : personal profile === */}
+      {/* === First div : personal profile === */}
 
-        <div className="card grid-2">
+      <div className="card grid-2">
 
-          <div className="all-center" title="sub-grid #1">
+        <div className="all-center" title="sub-grid #1">
 
-            <img src={avatar_url}
-              className="round-img my" alt={`profile pic of ${name}`}
-              style={{ width: '150px' }}
-            />
+          <img src={avatar_url}
+            className="round-img my" alt={`profile pic of ${name}`}
+            style={{ width: '150px' }}
+          />
 
-            <p className="my-1"> location: {location} </p>
-
-          </div>
-
-          <div title="sub-grid #2">
-
-            { //if there's bio in profile, display it in <Fragment>
-              bio && <Fragment>
-
-                <h3>Bio</h3>
-                <p>{bio}</p>
-
-              </Fragment>}
-
-            <a href={html_url} className='btn btn-dark my-1'>Visit my Github page</a>
-
-            <ul>
-
-              <li>
-                {login && <Fragment>
-
-                  <strong>Username: </strong>
-                  {login}
-                </Fragment>
-                }
-              </li>
-
-              <li>
-                {company && <Fragment>
-
-                  <strong>Company: </strong>
-                  {company}
-                </Fragment>
-                }
-              </li>
-
-              <li>
-                {blog && <Fragment>
-
-                  <strong>Blog: </strong>
-
-                  <span>
-                    <a href={`https://${blog}`} target="_blank" rel="noopener noreferrer">
-                      {blog}
-                    </a> </span>
-
-                </Fragment>
-                }
-              </li>
-
-            </ul>
-
-
-          </div>
+          <p className="my-1"> location: {location} </p>
 
         </div>
 
+        <div title="sub-grid #2">
 
-        {/* === Second div : cards === */}
+          { //if there's bio in profile, display it in <Fragment>
+            bio && <Fragment>
 
-        <div className="card text-center">
+              <h3>Bio</h3>
+              <p>{bio}</p>
 
-          <div className="badge badge-primary">
-            Followers : {followers}
-          </div>
+            </Fragment>}
 
-          <div className="badge badge-success">
-            Following : {following}
-          </div>
+          <a href={html_url} className='btn btn-dark my-1'>Visit my Github page</a>
 
-          <div className="badge badge-ligt">
-            Public Repos : {public_repos}
-          </div>
+          <ul>
 
-          <div className="badge badge-dark">
-            Public Gists : {public_gists}
-          </div>
+            <li>
+              {login && <Fragment>
+
+                <strong>Username: </strong>
+                {login}
+              </Fragment>
+              }
+            </li>
+
+            <li>
+              {company && <Fragment>
+
+                <strong>Company: </strong>
+                {company}
+              </Fragment>
+              }
+            </li>
+
+            <li>
+              {blog && <Fragment>
+
+                <strong>Blog: </strong>
+
+                <span>
+                  <a href={`https://${blog}`} target="_blank" rel="noopener noreferrer">
+                    {blog}
+                  </a> </span>
+
+              </Fragment>
+              }
+            </li>
+
+          </ul>
+
 
         </div>
 
-        {/* === Third section : Repos === */}
+      </div>
 
 
-        <Repos reposArray={ //use <Repos/> Component and its attribute "reposArray" to send Array data to <Repos/> as argument
+      {/* === Second div : cards === */}
 
-          this.props.prop_userRepos
-          // this.props.prop_userRepos is from the attribute "prop_userRepos" from component <User /> used in app.js
-        } />
+      <div className="card text-center">
+
+        <div className="badge badge-primary">
+          Followers : {followers}
+        </div>
+
+        <div className="badge badge-success">
+          Following : {following}
+        </div>
+
+        <div className="badge badge-ligt">
+          Public Repos : {public_repos}
+        </div>
+
+        <div className="badge badge-dark">
+          Public Gists : {public_gists}
+        </div>
+
+      </div>
 
 
-      </div >
-    )
-  }
+      {/* === Third section : Repos === */}
+
+      <Repos reposArray={ //use <Repos/> Component and its attribute "reposArray" to send Array data to <Repos/> as argument
+
+        this.props.prop_userRepos
+        // this.props.prop_userRepos is from the attribute "prop_userRepos" from component <User /> used in app.js
+      } />
+
+
+    </div >
+  )
+
+}
+
+User.propTypes = {
+  prop_LoadingSpinner: PropTypes.bool,
+  prop_getUserData: PropTypes.func.isRequired,
+  prop_userData: PropTypes.object.isRequired,
+  prop_getUserRepo: PropTypes.func.isRequired,
+  prop_userRepos: PropTypes.array.isRequired
 }
 
 export default User

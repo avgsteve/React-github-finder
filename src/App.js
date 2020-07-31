@@ -235,8 +235,6 @@ class App extends Component {
 
                 < User // display single user's profil page
 
-                  // When mounting this component, its componentDidMount() calls getSingleUserData() from props.methods
-
                   {...props} // this will pass in the Objects as props from Router
 
                   prop_getUserData={this.getSingleUserData
@@ -245,7 +243,6 @@ class App extends Component {
 
                   prop_userData={
                     state_singleUserData
-                    // singleUserData equals to this.state_singleUserData obj for data from HTTP response from this.getSingleUserData()
                   }
 
                   prop_getUserRepo={this.getUserRepos
@@ -258,7 +255,6 @@ class App extends Component {
 
 
                   prop_LoadingSpinner={state_LoadingSpinner
-                    // The loading status to toggle spinner icon while loading the data from API query
                   }
 
                   prop_allProos={props}

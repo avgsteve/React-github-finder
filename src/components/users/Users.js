@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import UserItem from './UserItem';
 // 1) Use and send data to "UserItem" component to render data
 
+import GithubContext from '../../context/github/githubContext';
 
 import Spinner from '../layout/Spinner';
 // import { Fragment } from 'react';
 
-const Users = ({ usersData, stateOf_displayLoadingSpinner }) => { // 2) Being used by App.js, get "state" from App.js (props) first
+const Users = () => {
+  // 2) 
+
+  const githubContext = useContext(GithubContext); // use GithubState 的 return (  <GithubContext.Provider 裡面的 value 來讀取資料
+
+  const { loading, users } = githubContext;
 
 
   // 3) === (NO NEED for render() ) when using Arrow function as exported component ) ===
   // In render(), use Component "UserItem" and pass in Props "key" and "user"
 
   // this IF condition will be executed every time the state is changed in Main Components (App.js)
-  if (stateOf_displayLoadingSpinner) {
+
+  // loading was  stateOf_displayLoadingSpinner
+  if (loading) {
     return <Spinner />  // display the loader if the loading API process is ongoing
 
   } else { // if loading is finished (loadingApi set back to false),
@@ -35,7 +43,7 @@ const Users = ({ usersData, stateOf_displayLoadingSpinner }) => { // 2) Being us
         <div style={divStyle} >
 
           { // JSX Syntax
-            usersData.map(
+            users.map(
               user => (<UserItem key={user.id} user={user} />)
             )
           }

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext';
 
 // Emmet: rce 
-const Search = ({ prop_toggleClearButton, prop_clearUsers, empty_input_alert }) => {
+const Search = ({
+  // prop_toggleClearButton, 
+  // prop_clearUsers, 
+  empty_input_alert }) => {
 
   // use state hook (useContext)
   const githubContext = useContext(GithubContext);
@@ -93,10 +96,22 @@ const Search = ({ prop_toggleClearButton, prop_clearUsers, empty_input_alert }) 
         // ref:  https://www.robinwieruch.de/conditional-rendering-react#conditional-rendering-in-react-        
         */}
 
+
+
       {/* ==== Sub-component#3: Clear button (outside and below the Form) ==== */}
-      {prop_toggleClearButton // {prop_toggleClearButton} equals to {this.props.prop_toggleClearButton}
+
+
+
+      {
+
+        githubContext.users.length > 0
+
+        // {prop_toggleClearButton} equals to {this.props.prop_toggleClearButton}
         && (
-          <button className="btn btn-light btn-block" onClick={prop_clearUsers} >
+          <button className="btn btn-light btn-block" onClick={
+            // prop_clearUsers
+            githubContext.clearUsers
+          } >
             Clear results
           </button>
         )
@@ -110,7 +125,7 @@ const Search = ({ prop_toggleClearButton, prop_clearUsers, empty_input_alert }) 
 
 Search.propType = {
   // prop_searchUsers: PropTypes.func.isRequired,
-  prop_clearUsers: PropTypes.func.isRequired,
+  // prop_clearUsers: PropTypes.func.isRequired,
   toggleClearButton: PropTypes.bool.isRequired,
   setAlert: PropTypes.func.isRequired,
 }

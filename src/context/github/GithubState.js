@@ -6,9 +6,11 @@ import {
   SEARCH_USERS,
   SET_LOADING,
   CLEAR_USERS,
-  // GET_USER,
-  // GET_REPOS
+  GET_USER,
+  GET_REPOS
 } from '../types';
+
+// =============== githubState.js 是用在 App.js 裡面 =================
 
 // let githubClientId;
 // let githubClientSecret;
@@ -41,7 +43,7 @@ const GithubState = props => {
   // send GET req to API to find user
   const getUsersByName = async text => {
 
-    setState_LoadingState();
+    setState_LoadingState(); // trigger dispatch()
 
     // for testing
     console.log('==> Text input received in method "getUsersByName":\n', text);
@@ -66,6 +68,7 @@ const GithubState = props => {
     });
   }
 
+  // ===================================
 
 
   // // Get User
@@ -83,6 +86,41 @@ const GithubState = props => {
   // };
 
 
+  const getSingleUserData = async username => {
+
+    // setState_LoadingState(true);
+    setState_LoadingState(); // trigger dispatch()
+
+
+    // for testing
+    // console.log('==> Current username received in "getSingleUserData":\n', username);
+
+    // === get user's profile ===
+    const response_userProfile = await axios.get(`https://api.github.com/users/${username}`,
+      {
+        headers: {
+          Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+        }
+      }
+    );
+
+    // For testing, log out results from API
+    // console.log('Single user\'s data from Github API:\n');
+    // console.log(response_userProfile.data);
+
+    // Change below to dispatch
+    // setState_SingleUserData(response_userProfile.data);
+    dispatch({
+      type: GET_USER,
+      payload: response_userProfile.data
+    })
+
+    // setState_LoadingState(false);
+
+  }
+
+  //================================================
+
 
   // // Get Repos
   // const getUserRepos = async username => {
@@ -98,10 +136,48 @@ const GithubState = props => {
   //   });
   // };
 
+
+  // response_userRepos was getUserRepos
+  const getUserRepos = async username => {
+    // setState_LoadingState(true);
+    setState_LoadingState(); // trigger dispatch()
+
+    const response_userRepos = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`,
+      {
+        headers: {
+          Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
+        }
+      }
+    );
+
+    dispatch({
+      type: GET_REPOS,
+      payload: response_userRepos.data
+    })
+
+
+
+  }
+
+
+  //================================
   // Clear Users
-  const clearUsers = () => dispatch({ type: CLEAR_USERS });
+  // const clearUsers = () => dispatch(
+  //  { type: CLEAR_USERS }
+  // );
 
+  // Clear search results from page
+  const clearUsers = () => {
 
+    console.log(`\nUsers' data and search field have been cleared!\n`);
+
+    // setState_UsersData([]);
+    // setState_LoadingState(false);
+
+    // clear all results by sending dispatch to gitHubReducer
+    dispatch({ type: CLEAR_USERS });
+
+  };
 
   // ================================
 
@@ -125,12 +201,12 @@ const GithubState = props => {
       value={{
         users: state.users,
         user: state.user,
-        repos: state.repos,
+        userReposData: state.repos,
         loading: state.loading,
         getUsersByName, // was "searchUsers"
         clearUsers,
-        // getUser,
-        // getUserRepos
+        getSingleUserData, //was getUser,
+        getUserRepos, // was getUserRepos
       }}
     >
       {props.children}

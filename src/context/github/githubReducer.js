@@ -33,7 +33,7 @@ export default (state, action) => {
     case GET_REPOS: {
       return {
         ...state,
-        repos: action.payload,
+        repos: action.payload, // 來自於 GithubState.js 裡面的 getUserRepos 裡面的 dispatch {payload} 物件
         loading: false
       };
     }

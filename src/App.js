@@ -1,17 +1,21 @@
 import React, {
-  Fragment,
+  // Fragment,
   // useState // removed. No more component level state
 } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+
 import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
-import Users from './components/users/Users';
 import User from './components/users/User'; // display single user's profil page
-import Search from './components/users/Search';
-import About from './components/pages/About';
-// import PropTypes from 'prop-types';
-// import axios from 'axios';
 
+import Home from './components/pages/Home'; // Included components: Search & Users
+
+import About from './components/pages/About';
+
+import NotFound from './components/pages/NotFound';
+
+// ==== Component for providing global state ====
 import GithubState from './context/github/GithubState';
 import AlertState from './context/alert/AlertState';
 
@@ -96,40 +100,13 @@ const App = () => {
             <div className="container">
               {/* Render ALL components INSIDE a div. */}
 
-              <Alert
-              // displayConfigs= { state_alertConfig } 
+              <Alert  // displayConfigs= { state_alertConfig } 
               />
 
               <Switch>
 
-                <Route exact path='/' render=
-                  {props =>
-                    (
-                      <Fragment>
-
-                        <Search
-                        // prop_searchUsers={getUsersByName}
-
-                        // prop_clearUsers={clearUsersData}
-
-                        // prop_toggleClearButton={state_searchResults_usersData.length > 0 ? true : false}
-
-                        // empty_input_alert={
-                        //   setAlert
-                        //   // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
-                        // }
-
-                        />
-
-                        <Users
-                        // stateOf_displayLoadingSpinner={state_LoadingSpinner}
-                        // usersData={state_searchResults_usersData}
-
-                        />
-
-                      </Fragment>
-                    )
-                  }
+                <Route exact path='/' component={Home}
+                // contains <Search /> and <Users />
                 />
 
                 <Route exact path='/about' component={About} />
@@ -137,44 +114,10 @@ const App = () => {
 
                 {/* ==== For single user's profile and repos ==== */}
 
-                <Route
-                  exact path='/user/:username'
-                  component={User}
-
-                // {...props} 
-                // this will pass in the Objects as props from Router
-
-                // prop_getUserData={getSingleUserData
-                //   // it was a function in App.js to query from API
-                //   // need to pass username to this method to query user's profile data via Github API
-                // }
+                <Route exact path='/user/:username' component={User} />
 
 
-                // prop_userData={
-                //   // read user's data from state
-
-                //   state_singleUserData
-                // }
-
-
-
-                // prop_getUserRepo={
-
-                //   // need to pass username to this method to query user's profile data via Github API
-
-                //getUserRepos
-
-                // }
-
-
-
-                // prop_userRepos={state_userRepos_inArray
-
-                // } 
-                // get repos data from variable "state_userRepos_inArray" by destructuring this.state
-
-                />
-
+                <Route component={NotFound} />
 
 
               </Switch>

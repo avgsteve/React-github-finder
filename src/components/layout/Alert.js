@@ -2,23 +2,46 @@ import React from 'react';
 // import React, { useContext } from 'react';
 // import AlertContext from '../../context/alert/alertContext';
 
-const Alert = ({ displayConfigs }) => {
+import { useContext } from 'react';
+import AlertContext from '../../context/alert/alertContext';
 
+const Alert = (
+  // { displayConfigs }
+) => {
   //configs is the alertConfig obj from state in App.js
 
-  return (
-    displayConfigs !== null && ( // When alert !== null is true and 
+  const alertContext = useContext(AlertContext);
 
-      <div className={`alert alert-${displayConfigs.type}`}>
+  const { alertConfig } = alertContext;
+
+  return (
+    alertConfig !== null && ( // When alert !== null is true and 
+
+      <div className={`alert alert-${alertConfig.type}`}>
 
         <i className="fas fa-info-circle" alt="The font awesome icon" />
 
-        {displayConfigs.msg}
+        {alertConfig.msg}
 
       </div>
     )
 
   );
+
+
+  // return (
+  //   displayConfigs !== null && ( // When alert !== null is true and 
+
+  //     <div className={`alert alert-${displayConfigs.type}`}>
+
+  //       <i className="fas fa-info-circle" alt="The font awesome icon" />
+
+  //       {displayConfigs.msg}
+
+  //     </div>
+  //   )
+
+  // );
 
 };
 

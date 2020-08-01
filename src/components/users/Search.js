@@ -1,15 +1,20 @@
 import React, { useState, useContext } from 'react'
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import GithubContext from '../../context/github/githubContext';
+import AlertContext from '../../context/alert/alertContext';
 
-// Emmet: rce 
-const Search = ({
+
+const Search = (
+  // {
   // prop_toggleClearButton, 
   // prop_clearUsers, 
-  empty_input_alert }) => {
+  // empty_input_alert
+  // }
+) => {
 
   // use state hook (useContext)
   const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
 
 
 
@@ -33,7 +38,12 @@ const Search = ({
 
     if (keyWord_searchUser === "") {
 
-      empty_input_alert(' Please enter something in the search field', 'light');
+      // 原本
+      // empty_input_alert(' Please enter something in the search field', 'light');
+
+      // 改成alertContext 跟 AlertState.js裡面的 setAlert
+      // 透過 setAlert 裡面的 dispatch 送出資料到 alertReducer
+      alertContext.setAlert(' Please enter something in the search field', 'light');
 
       /* 
       "empty_input_alert(...)" equals to 
@@ -123,11 +133,11 @@ const Search = ({
 }
 
 
-Search.propType = {
-  // prop_searchUsers: PropTypes.func.isRequired,
-  // prop_clearUsers: PropTypes.func.isRequired,
-  toggleClearButton: PropTypes.bool.isRequired,
-  setAlert: PropTypes.func.isRequired,
-}
+// Search.propType = {
+//   // prop_searchUsers: PropTypes.func.isRequired,
+//   // prop_clearUsers: PropTypes.func.isRequired,
+//   toggleClearButton: PropTypes.bool.isRequired,
+//   setAlert: PropTypes.func.isRequired,
+// }
 
 export default Search;

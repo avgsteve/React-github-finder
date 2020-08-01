@@ -1,4 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, {
+  Fragment,
+  // useState // removed. No more component level state
+} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
@@ -10,17 +13,23 @@ import About from './components/pages/About';
 // import axios from 'axios';
 
 import GithubState from './context/github/GithubState';
+import AlertState from './context/alert/AlertState';
 
 import './App.css';
 
 const App = () => {
 
   // ==== [state_Of_Obj, state_Setter] = useState(default_State) ===
+
   // const [state_searchResults_usersData, setState_UsersData] = useState([]);
+
   // const [state_singleUserData, setState_SingleUserData] = useState({}); //
+
   // const [state_userRepos_inArray, setState_UserRepos] = useState([]); //
+
   // const [state_LoadingSpinner, setState_LoadingState] = useState(false); //
-  const [state_alertConfig, setState_setAlert] = useState(null); // default: empty Array, set up by settingAlert method
+
+  // const [state_alertConfig, setState_setAlert] = useState(null); // default: empty Array, set up by settingAlert method
 
 
   // const getSingleUserData = async username => {
@@ -59,115 +68,121 @@ const App = () => {
 
 
 
-  const setAlert = (msg, type) => {
+  // const setAlert = (msg, type) => {
 
-    console.log('\n\n"this" obj in setAlert() in App.js:\n', this);
+  //   console.log('\n\n"this" obj in setAlert() in App.js:\n', this);
 
-    setState_setAlert({ msg: msg, type: type })
+  //   setState_setAlert({ msg: msg, type: type })
 
-    setTimeout(
-      () => {
-        setState_setAlert(null);
-      }, 3000);
-  }
+  //   setTimeout(
+  //     () => {
+  //       setState_setAlert(null);
+  //     }, 3000);
+  // }
 
 
   return (
     <GithubState>
-      <Router>
-        {/* === React Router: Start === */}
+      <AlertState>
 
-        <div className='App'>
+        <Router>
 
-          <Navbar />
+          {/* === React Router: Start === */}
 
-          <div className="container"> {/* Render ALL components INSIDE a div. */}
+          <div className='App'>
 
-            <Alert displayConfigs=
-              {
-                state_alertConfig
-              } />
+            <Navbar />
 
-            <Switch>
+            <div className="container">
+              {/* Render ALL components INSIDE a div. */}
 
-              <Route exact path='/' render=
-                {props =>
-                  (
-                    <Fragment>
+              <Alert
+              // displayConfigs= { state_alertConfig } 
+              />
 
-                      <Search
+              <Switch>
+
+                <Route exact path='/' render=
+                  {props =>
+                    (
+                      <Fragment>
+
+                        <Search
                         // prop_searchUsers={getUsersByName}
 
                         // prop_clearUsers={clearUsersData}
 
                         // prop_toggleClearButton={state_searchResults_usersData.length > 0 ? true : false}
 
-                        empty_input_alert={
-                          setAlert
-                          // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
-                        } />
+                        // empty_input_alert={
+                        //   setAlert
+                        //   // this.setAlert is a method method will receive arguments from the value passed in from the value of the attribute "empty_input_alert" in a form's onSubmit event in Search.js
+                        // }
 
-                      <Users
-                      // stateOf_displayLoadingSpinner={state_LoadingSpinner}
-                      // usersData={state_searchResults_usersData}
+                        />
 
-                      />
+                        <Users
+                        // stateOf_displayLoadingSpinner={state_LoadingSpinner}
+                        // usersData={state_searchResults_usersData}
 
-                    </Fragment>
-                  )
-                }
-              />
+                        />
 
-              <Route exact path='/about' component={About} />
+                      </Fragment>
+                    )
+                  }
+                />
 
-
-              {/* ==== For single user's profile and repos ==== */}
-
-              <Route
-                exact path='/user/:username'
-                component={User}
-
-              // {...props} 
-              // this will pass in the Objects as props from Router
-
-              // prop_getUserData={getSingleUserData
-              //   // it was a function in App.js to query from API
-              //   // need to pass username to this method to query user's profile data via Github API
-              // }
+                <Route exact path='/about' component={About} />
 
 
-              // prop_userData={
-              //   // read user's data from state
+                {/* ==== For single user's profile and repos ==== */}
 
-              //   state_singleUserData
-              // }
+                <Route
+                  exact path='/user/:username'
+                  component={User}
+
+                // {...props} 
+                // this will pass in the Objects as props from Router
+
+                // prop_getUserData={getSingleUserData
+                //   // it was a function in App.js to query from API
+                //   // need to pass username to this method to query user's profile data via Github API
+                // }
 
 
+                // prop_userData={
+                //   // read user's data from state
 
-              // prop_getUserRepo={
-
-              //   // need to pass username to this method to query user's profile data via Github API
-
-              //getUserRepos
-
-              // }
+                //   state_singleUserData
+                // }
 
 
 
-              // prop_userRepos={state_userRepos_inArray
+                // prop_getUserRepo={
 
-              // } 
-              // get repos data from variable "state_userRepos_inArray" by destructuring this.state
+                //   // need to pass username to this method to query user's profile data via Github API
 
-              />
+                //getUserRepos
+
+                // }
 
 
 
-            </Switch>
-          </div>
+                // prop_userRepos={state_userRepos_inArray
 
-        </div> {/* === end of <div className='App'> == */}
-      </Router>
+                // } 
+                // get repos data from variable "state_userRepos_inArray" by destructuring this.state
+
+                />
+
+
+
+              </Switch>
+            </div>
+
+          </div> {/* === end of <div className='App'> == */}
+        </Router>
+      </AlertState>
     </GithubState>
   );
 

@@ -4,28 +4,40 @@ import AlertReducer from './alertReducer';
 import { SET_ALERT, REMOVE_ALERT } from '../types';
 
 const AlertState = props => {
-  const initialState = null;
+
+  const initialState = null; // set initial value of state
 
   const [state, dispatch] = useReducer(AlertReducer, initialState);
 
   // Set Alert
   const setAlert = (msg, type) => {
+
+    //送出 dispatch 顯示 alert 區塊
     dispatch({
       type: SET_ALERT,
       payload: { msg, type }
     });
 
-    setTimeout(() => dispatch({ type: REMOVE_ALERT }), 5000);
+    //再次送出 dispatch 移除 alert 區塊
+    setTimeout(() =>
+      dispatch({
+        type: REMOVE_ALERT
+        // 不需要payload
+      }),
+      5000);
+
   };
 
   return (
     <AlertContext.Provider
       value={{
-        alert: state,
-        setAlert
+        alertConfig: state, // the (initial) state of null
+        setAlert // method: setAlert
       }}
     >
+
       {props.children}
+
     </AlertContext.Provider>
   );
 };

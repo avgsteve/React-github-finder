@@ -23,28 +23,6 @@ const App = () => {
   const [state_alertConfig, setState_setAlert] = useState(null); // default: empty Array, set up by settingAlert method
 
 
-  // send GET req to API to find user
-  const getUsersByName = async text => {
-
-    setState_LoadingState(true);
-
-    // for testing
-    console.log('==> Text input received in method "searchUsers":\n', text);
-
-    // get results from API
-    const res = await axios.get(`https://api.github.com/search/users?q=${text}`,
-      {
-        headers: {
-          Authorization: `token ${process.env.REACT_APP_GITHUB_ACCESS_TOKEN}`
-        }
-      }
-    );
-
-    // for testing
-    console.log('User query result fetched!\n\n');
-    setState_UsersData(res.data.items);
-    setState_LoadingState(false);
-  }
 
 
   const getSingleUserData = async username => {
@@ -146,7 +124,7 @@ const App = () => {
                     <Fragment>
 
                       <Search
-                        prop_searchUsers={getUsersByName}
+                        // prop_searchUsers={getUsersByName}
                         prop_clearUsers={clearUsersData}
 
                         prop_toggleClearButton={state_searchResults_usersData.length > 0 ? true : false}

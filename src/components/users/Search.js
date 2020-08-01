@@ -1,8 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
 // Emmet: rce 
-const Search = ({ prop_searchUsers, prop_toggleClearButton, prop_clearUsers, empty_input_alert }) => {
+const Search = ({ prop_toggleClearButton, prop_clearUsers, empty_input_alert }) => {
+
+  // use state hook (useContext)
+  const githubContext = useContext(GithubContext);
+
+
 
   const [keyWord_searchUser, updateKeyWord] = useState(''); // set initial value of text to ''  (which is empty)
 
@@ -36,7 +42,10 @@ const Search = ({ prop_searchUsers, prop_toggleClearButton, prop_clearUsers, emp
       console.log("\nThe keyWord_searchUser value from Form's onSubmit function in Seach.js:\n", keyWord_searchUser);
 
       // Send this.state.text as argument to the Props method (callback function) : this.searchGithubUsers
-      prop_searchUsers(keyWord_searchUser);
+
+      // prop_searchUsers(keyWord_searchUser);
+
+      githubContext.getUsersByName(keyWord_searchUser)
 
       updateKeyWord(''); // this.setState({ text: "" });
     }
@@ -100,7 +109,7 @@ const Search = ({ prop_searchUsers, prop_toggleClearButton, prop_clearUsers, emp
 
 
 Search.propType = {
-  prop_searchUsers: PropTypes.func.isRequired,
+  // prop_searchUsers: PropTypes.func.isRequired,
   prop_clearUsers: PropTypes.func.isRequired,
   toggleClearButton: PropTypes.bool.isRequired,
   setAlert: PropTypes.func.isRequired,

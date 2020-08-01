@@ -3,7 +3,12 @@ import GithubContext from '../../context/github/githubContext';
 import AlertContext from '../../context/alert/alertContext';
 
 const Search = () => {
-  const githubContext = useContext(GithubContext);
+
+
+  // initialize githubcontext by using useContext(GithubContext);
+  // useContext is a hook
+  const githubContext = useContext(GithubContext); // use it as        githubContext.searchUsers(text);
+
   const alertContext = useContext(AlertContext);
 
   const [text, setText] = useState('');
@@ -13,7 +18,13 @@ const Search = () => {
     if (text === '') {
       alertContext.setAlert('Please enter something', 'light');
     } else {
-      githubContext.searchUsers(text);
+
+      // getUsersByName(text) 原本為 searchUsers(text)
+      // githubContext.searchUsers(text);
+      githubContext.getUsersByName(text);
+      // 來自於 GithubState.js 的     <GithubContext.Provider 裡面的 getUsersByName
+
+
       setText('');
     }
   };
